@@ -1,0 +1,2849 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Simulator CAT — Seleksi KDKMP & KNMP 2026</title>
+        <style>
+            :root {
+                --bg: #0f1117;
+                --bg2: #1a1d27;
+                --bg3: #242838;
+                --border: #2e3347;whats
+                --border2: #3d4460;
+                --text: #e8eaf0;
+                --muted: #8b92a8;
+                --hint: #5a6080;
+                --blue: #4a9eff;
+                --blue-bg: #1a2a45;
+                --blue-dark: #2563eb;
+                --green: #22c55e;
+                --green-bg: #0f2a1a;
+                --red: #ef4444;
+                --red-bg: #2a0f0f;
+                --amber: #f59e0b;
+                --amber-bg: #2a1f0f;
+                --purple: #a78bfa;
+                --purple-bg: #1e1a2e;
+                --teal: #2dd4bf;
+                --teal-bg: #0f2420;
+                --accent: #4a9eff;
+                --radius: 8px;
+            }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: "Segoe UI", system-ui, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                min-height: 100vh;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+
+            /* SCREENS */
+            .screen {
+                display: none;
+            }
+            .screen.active {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+
+            /* LANDING */
+            #landing {
+                background: var(--bg);
+                align-items: center;
+                justify-content: center;
+                padding: 40px 20px;
+            }
+            .logo-area {
+                text-align: center;
+                margin-bottom: 48px;
+            }
+            .logo-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                background: var(--blue-bg);
+                border: 1px solid var(--blue);
+                border-radius: 100px;
+                padding: 8px 20px;
+                margin-bottom: 24px;
+            }
+            .logo-badge span {
+                color: var(--blue);
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+            .main-title {
+                font-size: 36px;
+                font-weight: 700;
+                color: var(--text);
+                letter-spacing: -0.5px;
+                line-height: 1.2;
+                margin-bottom: 12px;
+            }
+            .main-sub {
+                font-size: 16px;
+                color: var(--muted);
+                margin-bottom: 40px;
+            }
+            .cards-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+                max-width: 860px;
+                width: 100%;
+                margin-bottom: 40px;
+            }
+            .info-card {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 20px;
+            }
+            .info-card .ic-top {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            .ic-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+            .ic-label {
+                font-size: 12px;
+                color: var(--muted);
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .ic-value {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--text);
+            }
+            .ic-desc {
+                font-size: 12px;
+                color: var(--hint);
+                margin-top: 4px;
+            }
+            .calc-box {
+                background: var(--bg3);
+                border: 1px solid var(--border2);
+                border-radius: 10px;
+                padding: 16px 24px;
+                text-align: center;
+                margin-bottom: 36px;
+                max-width: 560px;
+            }
+            .calc-title {
+                font-size: 13px;
+                color: var(--muted);
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 12px;
+            }
+            .calc-formula {
+                font-family: monospace;
+                font-size: 14px;
+                color: var(--teal);
+                background: var(--teal-bg);
+                border-radius: 6px;
+                padding: 8px 16px;
+                display: inline-block;
+                margin-bottom: 8px;
+            }
+            .calc-result {
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .calc-result strong {
+                color: var(--amber);
+            }
+            .btn-group {
+                display: flex;
+                gap: 12px;
+            }
+            .btn {
+                cursor: pointer;
+                border: none;
+                border-radius: 8px;
+                font-size: 15px;
+                font-weight: 600;
+                padding: 14px 32px;
+                transition: all 0.15s;
+            }
+            .btn-primary {
+                background: var(--blue-dark);
+                color: #fff;
+            }
+            .btn-primary:hover {
+                background: var(--blue);
+            }
+            .btn-secondary {
+                background: var(--bg3);
+                color: var(--text);
+                border: 1px solid var(--border2);
+            }
+            .btn-secondary:hover {
+                background: var(--bg2);
+            }
+
+            /* STUDY MODE */
+            #study {
+                background: var(--bg);
+            }
+            .study-header {
+                background: var(--bg2);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 32px;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+            .study-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--text);
+            }
+            .study-nav {
+                display: flex;
+                gap: 8px;
+                margin-left: auto;
+            }
+            .tab-btn {
+                background: none;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                color: var(--muted);
+                font-size: 13px;
+                font-weight: 600;
+                padding: 8px 16px;
+                cursor: pointer;
+                transition: all 0.15s;
+            }
+            .tab-btn.active {
+                background: var(--blue-dark);
+                border-color: var(--blue-dark);
+                color: #fff;
+            }
+            .study-body {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 32px 24px;
+            }
+            .section-header {
+                margin-bottom: 24px;
+            }
+            .section-tag {
+                display: inline-block;
+                background: var(--purple-bg);
+                color: var(--purple);
+                border-radius: 6px;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                padding: 4px 12px;
+                margin-bottom: 10px;
+            }
+            .section-title2 {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 6px;
+            }
+            .section-desc {
+                font-size: 14px;
+                color: var(--muted);
+            }
+            .insight-box {
+                background: var(--amber-bg);
+                border: 1px solid var(--amber);
+                border-radius: 10px;
+                padding: 16px 20px;
+                margin-bottom: 28px;
+            }
+            .insight-box h4 {
+                font-size: 13px;
+                color: var(--amber);
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 8px;
+            }
+            .insight-box p {
+                font-size: 13px;
+                color: #d4a052;
+                line-height: 1.6;
+                margin-bottom: 6px;
+            }
+            .insight-box p:last-child {
+                margin-bottom: 0;
+            }
+            .trap-box {
+                background: var(--red-bg);
+                border: 1px solid var(--red);
+                border-radius: 10px;
+                padding: 16px 20px;
+                margin-bottom: 28px;
+            }
+            .trap-box h4 {
+                font-size: 13px;
+                color: var(--red);
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 8px;
+            }
+            .trap-box p {
+                font-size: 13px;
+                color: #d46a6a;
+                line-height: 1.6;
+                margin-bottom: 6px;
+            }
+            .trap-box p:last-child {
+                margin-bottom: 0;
+            }
+            .q-card {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 24px;
+                margin-bottom: 16px;
+            }
+            .q-meta {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 14px;
+            }
+            .q-num {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--muted);
+                background: var(--bg3);
+                border-radius: 6px;
+                padding: 4px 10px;
+            }
+            .q-diff {
+                font-size: 11px;
+                font-weight: 700;
+                border-radius: 100px;
+                padding: 3px 10px;
+            }
+            .diff-mudah {
+                background: var(--green-bg);
+                color: var(--green);
+            }
+            .diff-sedang {
+                background: var(--amber-bg);
+                color: var(--amber);
+            }
+            .diff-sulit {
+                background: var(--red-bg);
+                color: var(--red);
+            }
+            .q-text {
+                font-size: 15px;
+                color: var(--text);
+                margin-bottom: 16px;
+                line-height: 1.7;
+            }
+            .q-options {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+            .q-option {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 11px 16px;
+                font-size: 14px;
+                color: var(--muted);
+                display: flex;
+                gap: 12px;
+            }
+            .q-option.correct {
+                background: var(--green-bg);
+                border-color: var(--green);
+                color: var(--green);
+            }
+            .opt-key {
+                font-weight: 700;
+                color: var(--hint);
+                min-width: 16px;
+            }
+            .q-option.correct .opt-key {
+                color: var(--green);
+            }
+            .explanation {
+                background: var(--bg3);
+                border-left: 3px solid var(--teal);
+                border-radius: 0 8px 8px 0;
+                padding: 14px 16px;
+                margin-top: 4px;
+            }
+            .explanation h5 {
+                font-size: 12px;
+                color: var(--teal);
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 6px;
+            }
+            .explanation p {
+                font-size: 13px;
+                color: var(--muted);
+                line-height: 1.6;
+            }
+
+            /* TEST MODE */
+            #test {
+                background: var(--bg);
+            }
+            .test-topbar {
+                background: var(--bg2);
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                padding: 0 24px;
+                height: 56px;
+                gap: 20px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            .test-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--text);
+            }
+            .test-section-badge {
+                background: var(--blue-bg);
+                color: var(--blue);
+                font-size: 12px;
+                font-weight: 700;
+                border-radius: 6px;
+                padding: 4px 12px;
+            }
+            .timer-block {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .timer-label {
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .timer-val {
+                font-family: monospace;
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--text);
+                letter-spacing: 1px;
+            }
+            .timer-val.warning {
+                color: var(--amber);
+            }
+            .timer-val.danger {
+                color: var(--red);
+            }
+            .test-layout {
+                display: grid;
+                grid-template-columns: 240px 1fr;
+                height: calc(100vh - 56px);
+                overflow: hidden;
+            }
+            .sidebar {
+                background: var(--bg2);
+                border-right: 1px solid var(--border);
+                overflow-y: auto;
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .sidebar-title {
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--hint);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 4px;
+                padding: 0 4px;
+            }
+            .q-grid {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+            }
+            .q-nav-btn {
+                aspect-ratio: 1;
+                border-radius: 6px;
+                border: 1px solid var(--border);
+                background: var(--bg3);
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.1s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .q-nav-btn:hover {
+                border-color: var(--blue);
+                color: var(--blue);
+            }
+            .q-nav-btn.current {
+                background: var(--blue-dark);
+                border-color: var(--blue-dark);
+                color: #fff;
+            }
+            .q-nav-btn.answered {
+                background: var(--green-bg);
+                border-color: var(--green);
+                color: var(--green);
+            }
+            .q-nav-btn.flagged {
+                background: var(--amber-bg);
+                border-color: var(--amber);
+                color: var(--amber);
+            }
+            .q-nav-btn.answered.flagged {
+                background: #1a2010;
+                border-color: var(--amber);
+                color: var(--amber);
+            }
+            .sidebar-legend {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border);
+                margin-top: 8px;
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .legend-box {
+                width: 14px;
+                height: 14px;
+                border-radius: 3px;
+            }
+            .lb-answered {
+                background: var(--green-bg);
+                border: 1px solid var(--green);
+            }
+            .lb-flagged {
+                background: var(--amber-bg);
+                border: 1px solid var(--amber);
+            }
+            .lb-current {
+                background: var(--blue-dark);
+            }
+            .lb-empty {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+            }
+            .progress-line {
+                height: 3px;
+                background: var(--border);
+                border-radius: 2px;
+                margin-top: 8px;
+            }
+            .progress-fill {
+                height: 100%;
+                background: var(--green);
+                border-radius: 2px;
+                transition: width 0.3s;
+            }
+            .progress-text {
+                font-size: 12px;
+                color: var(--muted);
+                margin-top: 6px;
+            }
+            .test-main {
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+            .q-area {
+                flex: 1;
+                padding: 32px 40px;
+                max-width: 720px;
+            }
+            .q-area .q-meta2 {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            .q-number-large {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--muted);
+            }
+            .flag-btn {
+                background: none;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 600;
+                padding: 6px 14px;
+                cursor: pointer;
+                transition: all 0.15s;
+                margin-left: auto;
+            }
+            .flag-btn:hover,
+            .flag-btn.flagged {
+                border-color: var(--amber);
+                color: var(--amber);
+                background: var(--amber-bg);
+            }
+            .q-text-large {
+                font-size: 16px;
+                color: var(--text);
+                line-height: 1.75;
+                margin-bottom: 28px;
+            }
+            .answer-choices {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .answer-btn {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 18px;
+                font-size: 15px;
+                color: var(--muted);
+                cursor: pointer;
+                text-align: left;
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                transition: all 0.12s;
+            }
+            .answer-btn:hover {
+                border-color: var(--blue);
+                color: var(--text);
+                background: var(--blue-bg);
+            }
+            .answer-btn.selected {
+                border-color: var(--blue-dark);
+                background: var(--blue-bg);
+                color: var(--blue);
+            }
+            .opt-circle {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                border: 2px solid var(--border2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--hint);
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+            .answer-btn.selected .opt-circle {
+                border-color: var(--blue-dark);
+                background: var(--blue-dark);
+                color: #fff;
+            }
+            .q-footer {
+                border-top: 1px solid var(--border);
+                padding: 16px 40px;
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                background: var(--bg2);
+                position: sticky;
+                bottom: 0;
+            }
+            .btn-sm {
+                padding: 10px 24px;
+                font-size: 14px;
+            }
+            .btn-outline {
+                background: none;
+                border: 1px solid var(--border2);
+                color: var(--muted);
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 600;
+                padding: 10px 20px;
+                transition: all 0.15s;
+            }
+            .btn-outline:hover {
+                border-color: var(--blue);
+                color: var(--blue);
+            }
+            .btn-submit {
+                background: var(--red);
+                color: #fff;
+                border-radius: 8px;
+                border: none;
+                font-size: 14px;
+                font-weight: 700;
+                padding: 10px 24px;
+                cursor: pointer;
+                margin-left: auto;
+                transition: all 0.15s;
+            }
+            .btn-submit:hover {
+                background: #dc2626;
+            }
+
+            /* RESULTS */
+            #results {
+                background: var(--bg);
+                align-items: center;
+                justify-content: flex-start;
+                padding: 40px 24px;
+            }
+            .result-container {
+                max-width: 900px;
+                width: 100%;
+                margin: 0 auto;
+            }
+            .result-header {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+            .result-status {
+                display: inline-block;
+                border-radius: 100px;
+                padding: 10px 28px;
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 16px;
+            }
+            .status-pass {
+                background: var(--green-bg);
+                color: var(--green);
+                border: 1px solid var(--green);
+            }
+            .status-fail {
+                background: var(--red-bg);
+                color: var(--red);
+                border: 1px solid var(--red);
+            }
+            .result-score {
+                font-size: 64px;
+                font-weight: 800;
+                color: var(--text);
+                line-height: 1;
+                margin-bottom: 8px;
+            }
+            .result-sub {
+                font-size: 14px;
+                color: var(--muted);
+            }
+            .stats-row {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
+                margin-bottom: 32px;
+            }
+            .stat-card {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 16px;
+                text-align: center;
+            }
+            .stat-val {
+                font-size: 28px;
+                font-weight: 700;
+                margin-bottom: 4px;
+            }
+            .stat-lbl {
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .section-scores {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+            .score-block {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 20px;
+            }
+            .sb-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--muted);
+                margin-bottom: 12px;
+            }
+            .sb-score {
+                font-size: 36px;
+                font-weight: 800;
+                color: var(--text);
+            }
+            .sb-pass {
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .sb-bar {
+                height: 8px;
+                background: var(--border);
+                border-radius: 4px;
+                margin-top: 12px;
+            }
+            .sb-fill {
+                height: 100%;
+                border-radius: 4px;
+                transition: width 0.6s;
+            }
+            .review-section {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                margin-bottom: 24px;
+            }
+            .review-header {
+                padding: 16px 20px;
+                background: var(--bg3);
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+            }
+            .review-header h3 {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text);
+            }
+            .review-body {
+                padding: 0;
+            }
+            .review-q {
+                padding: 16px 20px;
+                border-bottom: 1px solid var(--border);
+                display: grid;
+                grid-template-columns: 32px 1fr auto;
+                gap: 12px;
+                align-items: start;
+            }
+            .review-q:last-child {
+                border-bottom: none;
+            }
+            .review-num {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--hint);
+            }
+            .review-qtext {
+                font-size: 13px;
+                color: var(--text);
+                line-height: 1.5;
+            }
+            .review-answer {
+                font-size: 12px;
+                font-weight: 700;
+                border-radius: 6px;
+                padding: 3px 10px;
+                white-space: nowrap;
+            }
+            .ra-correct {
+                background: var(--green-bg);
+                color: var(--green);
+            }
+            .ra-wrong {
+                background: var(--red-bg);
+                color: var(--red);
+            }
+            .ra-skip {
+                background: var(--bg3);
+                color: var(--hint);
+            }
+            .result-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+            }
+
+            /* SECTION SEPARATOR */
+            .section-sep {
+                background: var(--purple-bg);
+                border: 1px solid var(--purple);
+                border-radius: 8px;
+                padding: 12px 16px;
+                margin-bottom: 12px;
+            }
+            .section-sep span {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--purple);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            /* ================================================================
+               MOBILE RESPONSIVE — optimised for smartphone browsers
+            ================================================================ */
+
+            /* Off-canvas sidebar drawer toggle button — hidden on desktop */
+            .nav-toggle-btn {
+                display: none;
+                align-items: center;
+                gap: 6px;
+                background: var(--bg3);
+                border: 1px solid var(--border2);
+                border-radius: 6px;
+                color: var(--muted);
+                font-size: 13px;
+                font-weight: 600;
+                padding: 6px 12px;
+                cursor: pointer;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            /* Full-screen overlay behind the sidebar drawer */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.65);
+                z-index: 150;
+                backdrop-filter: blur(2px);
+                -webkit-backdrop-filter: blur(2px);
+            }
+            .sidebar-overlay.open {
+                display: block;
+            }
+            /* Close button inside drawer — hidden on desktop */
+            .sidebar-close {
+                display: none;
+                background: none;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                color: var(--muted);
+                font-size: 13px;
+                font-weight: 600;
+                padding: 8px 14px;
+                cursor: pointer;
+                width: 100%;
+                text-align: left;
+                margin-bottom: 12px;
+            }
+
+            @media (max-width: 768px) {
+                /* ── GLOBAL ──────────────────────────────── */
+                body {
+                    font-size: 14px;
+                }
+
+                /* ── LANDING ─────────────────────────────── */
+                #landing {
+                    padding: 36px 16px 32px;
+                    justify-content: flex-start;
+                }
+                .logo-area {
+                    margin-bottom: 28px;
+                }
+                .logo-badge {
+                    padding: 6px 14px;
+                }
+                .logo-badge span {
+                    font-size: 11px;
+                }
+                .main-title {
+                    font-size: 26px;
+                    letter-spacing: -0.3px;
+                }
+                .main-sub {
+                    font-size: 14px;
+                    margin-bottom: 24px;
+                }
+                .cards-grid {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 10px;
+                    margin-bottom: 20px;
+                }
+                .info-card {
+                    padding: 14px;
+                }
+                .ic-value {
+                    font-size: 18px;
+                }
+                .ic-desc {
+                    font-size: 11px;
+                }
+                .calc-box {
+                    padding: 14px 16px;
+                    margin-bottom: 20px;
+                    text-align: left;
+                }
+                .calc-formula {
+                    font-size: 11px;
+                    padding: 6px 12px;
+                    display: block;
+                    text-align: center;
+                    word-break: break-word;
+                }
+                .calc-result {
+                    font-size: 12px;
+                }
+                .btn-group {
+                    flex-direction: column;
+                    width: 100%;
+                    max-width: 420px;
+                    margin: 0 auto;
+                }
+                .btn {
+                    width: 100%;
+                    padding: 14px 20px;
+                    text-align: center;
+                }
+
+                /* ── STUDY ───────────────────────────────── */
+                .study-header {
+                    padding: 10px 14px;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    height: auto;
+                    position: sticky;
+                    top: 0;
+                }
+                .study-title {
+                    font-size: 14px;
+                    flex: 1;
+                    min-width: 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .study-nav {
+                    order: 10;
+                    margin-left: 0;
+                    width: 100%;
+                    gap: 6px;
+                }
+                .tab-btn {
+                    flex: 1;
+                    font-size: 12px;
+                    padding: 8px 6px;
+                    text-align: center;
+                }
+                /* Back button inside study header */
+                .study-header .btn {
+                    padding: 7px 12px !important;
+                    font-size: 12px !important;
+                    width: auto !important;
+                    margin-left: 0 !important;
+                }
+                .study-body {
+                    padding: 18px 14px;
+                }
+                .section-title2 {
+                    font-size: 18px;
+                }
+                .q-card {
+                    padding: 16px;
+                    border-radius: 10px;
+                }
+                .q-text {
+                    font-size: 14px;
+                }
+                .explanation {
+                    padding: 12px 14px;
+                }
+                .explanation p {
+                    font-size: 13px;
+                }
+
+                /* ── TEST ────────────────────────────────── */
+                .test-topbar {
+                    padding: 0 12px;
+                    height: 52px;
+                    gap: 8px;
+                    flex-shrink: 0;
+                }
+                .test-title {
+                    display: none;
+                }
+                .nav-toggle-btn {
+                    display: flex;
+                }
+                .timer-label {
+                    display: none;
+                }
+                .timer-block {
+                    gap: 6px;
+                }
+                .timer-val {
+                    font-size: 17px;
+                }
+                .test-topbar > .btn-outline {
+                    padding: 7px 11px !important;
+                    font-size: 12px !important;
+                    margin-left: 0 !important;
+                }
+
+                /* Test layout — single column */
+                .test-layout {
+                    grid-template-columns: 1fr;
+                    height: calc(100vh - 52px);
+                    overflow: hidden;
+                }
+
+                /* Sidebar — off-canvas drawer */
+                .sidebar {
+                    position: fixed;
+                    left: -300px;
+                    top: 0;
+                    bottom: 0;
+                    width: 280px;
+                    z-index: 200;
+                    transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+                    padding: 12px 14px;
+                    padding-top: 16px;
+                    overflow-y: auto;
+                    box-shadow: 4px 0 28px rgba(0, 0, 0, 0.65);
+                    border-right: none;
+                }
+                .sidebar.open {
+                    left: 0;
+                }
+                .sidebar-close {
+                    display: block;
+                }
+
+                /* Q area — full width */
+                .q-area {
+                    padding: 18px 14px 16px;
+                    max-width: 100%;
+                }
+                .q-area .q-meta2 {
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    margin-bottom: 14px;
+                }
+                .q-number-large {
+                    font-size: 12px;
+                }
+                .flag-btn {
+                    padding: 5px 11px;
+                    font-size: 11px;
+                }
+                .q-text-large {
+                    font-size: 15px;
+                    margin-bottom: 18px;
+                    line-height: 1.65;
+                }
+                .answer-choices {
+                    gap: 8px;
+                }
+                .answer-btn {
+                    padding: 13px 14px;
+                    font-size: 14px;
+                    gap: 12px;
+                    border-radius: 9px;
+                }
+                .opt-circle {
+                    width: 22px;
+                    height: 22px;
+                    font-size: 11px;
+                }
+                .q-footer {
+                    padding: 10px 14px;
+                    gap: 8px;
+                }
+                .btn-outline {
+                    padding: 9px 13px;
+                    font-size: 13px;
+                }
+                .btn-submit {
+                    padding: 9px 14px;
+                    font-size: 13px;
+                }
+
+                /* ── RESULTS ─────────────────────────────── */
+                #results {
+                    padding: 20px 14px;
+                }
+                .result-score {
+                    font-size: 52px;
+                }
+                .result-sub {
+                    font-size: 13px;
+                }
+                .stats-row {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                }
+                .stat-val {
+                    font-size: 22px;
+                }
+                .section-scores {
+                    grid-template-columns: 1fr;
+                    gap: 12px;
+                }
+                .review-q {
+                    grid-template-columns: 28px 1fr;
+                    gap: 8px;
+                    align-items: start;
+                }
+                .review-answer {
+                    grid-column: 2;
+                    width: fit-content;
+                    margin-top: 6px;
+                }
+                .result-actions {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .result-actions .btn {
+                    width: 100%;
+                    max-width: 340px;
+                }
+            }
+
+            /* Extra-small phones */
+            @media (max-width: 420px) {
+                .main-title {
+                    font-size: 22px;
+                }
+                .cards-grid {
+                    grid-template-columns: 1fr;
+                }
+                .q-area {
+                    padding: 14px 12px;
+                }
+                .answer-btn {
+                    padding: 12px 12px;
+                    font-size: 13px;
+                }
+                .q-footer {
+                    padding: 9px 12px;
+                    gap: 6px;
+                }
+                .btn-outline {
+                    padding: 8px 10px;
+                    font-size: 12px;
+                }
+                .btn-submit {
+                    padding: 8px 12px;
+                    font-size: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- LANDING SCREEN -->
+        <div id="landing" class="screen active">
+            <div style="text-align: center; max-width: 900px; width: 100%">
+                <div class="logo-area">
+                    <div class="logo-badge"><span>Panselnas 2026</span></div>
+                    <h1 class="main-title">
+                        Simulator CAT Seleksi<br />KDKMP & KNMP
+                    </h1>
+                    <p class="main-sub">
+                        Latihan soal berbasis Computer Assisted Test — TPK &
+                        Manajemen Koperasi
+                    </p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <div class="ic-top">
+                            <div
+                                class="ic-dot"
+                                style="background: var(--blue)"
+                            ></div>
+                            <span class="ic-label">Tes Potensi Kognitif</span>
+                        </div>
+                        <div class="ic-value">50 Soal</div>
+                        <div class="ic-desc">
+                            6 subtes × ~8-9 soal. Waktu 50 menit.
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="ic-top">
+                            <div
+                                class="ic-dot"
+                                style="background: var(--teal)"
+                            ></div>
+                            <span class="ic-label">Manajemen Koperasi</span>
+                        </div>
+                        <div class="ic-value">20 Soal</div>
+                        <div class="ic-desc">
+                            Sesuai ketentuan 20 butir soal.
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="ic-top">
+                            <div
+                                class="ic-dot"
+                                style="background: var(--amber)"
+                            ></div>
+                            <span class="ic-label">Mini Simulasi Akhir</span>
+                        </div>
+                        <div class="ic-value">15 Soal</div>
+                        <div class="ic-desc">
+                            Soal campuran terpilih bertimed.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-box">
+                    <div class="calc-title">
+                        Perhitungan Nilai Ambang Batas TPK
+                    </div>
+                    <div class="calc-formula">
+                        Nilai Ambang Batas ÷ Bobot Soal = Minimum Benar
+                    </div>
+                    <div class="calc-result">
+                        110 ÷ 5 = <strong>22 soal benar</strong> dari total soal
+                        &nbsp;|&nbsp; Tiap jawaban benar = <strong>+5</strong>,
+                        salah/kosong = <strong>0</strong>
+                    </div>
+                    <div class="calc-result" style="margin-top: 8px">
+                        Artinya: Perlu menjawab benar minimal
+                        <strong>22 dari ~55+ soal TPK resmi</strong> untuk lolos
+                        ambang batas
+                    </div>
+                </div>
+
+                <div class="btn-group" style="justify-content: center">
+                    <button class="btn btn-primary" onclick="showStudy()">
+                        📚 Mode Belajar
+                    </button>
+                    <button
+                        class="btn btn-secondary"
+                        onclick="startTest('full')"
+                    >
+                        ⏱ Simulasi Penuh (50 Soal)
+                    </button>
+                    <button
+                        class="btn btn-secondary"
+                        onclick="startTest('mini')"
+                    >
+                        🚀 Mini Test (15 Soal)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STUDY SCREEN -->
+        <div id="study" class="screen">
+            <div class="study-header">
+                <div class="study-title">
+                    Mode Belajar — Materi & Pembahasan
+                </div>
+                <div class="study-nav">
+                    <button
+                        class="tab-btn active"
+                        onclick="showTab('tpk', this)"
+                    >
+                        Tes Potensi Kognitif
+                    </button>
+                    <button class="tab-btn" onclick="showTab('mko', this)">
+                        Manajemen Koperasi
+                    </button>
+                </div>
+                <button
+                    class="btn btn-secondary btn-sm"
+                    style="
+                        margin-left: 16px;
+                        padding: 8px 20px;
+                        font-size: 13px;
+                    "
+                    onclick="show('landing')"
+                >
+                    ← Kembali
+                </button>
+            </div>
+            <div class="study-body" id="study-content"></div>
+        </div>
+
+        <!-- TEST SCREEN -->
+        <div id="test" class="screen">
+            <div class="test-topbar">
+                <div class="test-title">Seleksi KDKMP & KNMP 2026</div>
+                <div class="test-section-badge" id="section-badge">TPK</div>
+                <button class="nav-toggle-btn" onclick="toggleSidebar()">
+                    ☰ Soal
+                </button>
+                <div class="timer-block">
+                    <span class="timer-label">Sisa Waktu</span>
+                    <span class="timer-val" id="timer-display">50:00</span>
+                </div>
+                <button
+                    class="btn-outline"
+                    onclick="confirmSubmit()"
+                    style="margin-left: 16px"
+                >
+                    Selesai
+                </button>
+            </div>
+            <div
+                class="sidebar-overlay"
+                id="sidebar-overlay"
+                onclick="closeSidebar()"
+            ></div>
+            <div class="test-layout">
+                <div class="sidebar">
+                    <button class="sidebar-close" onclick="closeSidebar()">
+                        ✕ Tutup Panel
+                    </button>
+                    <div class="sidebar-title">Navigasi Soal</div>
+                    <div class="q-grid" id="q-nav-grid"></div>
+                    <div class="sidebar-legend">
+                        <div class="legend-item">
+                            <div class="legend-box lb-current"></div>
+                            Soal aktif
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box lb-answered"></div>
+                            Sudah dijawab
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box lb-flagged"></div>
+                            Ditandai
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box lb-empty"></div>
+                            Belum dijawab
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px">
+                        <div class="progress-line">
+                            <div
+                                class="progress-fill"
+                                id="prog-fill"
+                                style="width: 0%"
+                            ></div>
+                        </div>
+                        <div class="progress-text" id="prog-text">
+                            0 / 0 dijawab
+                        </div>
+                    </div>
+                </div>
+                <div class="test-main">
+                    <div class="q-area" id="q-area"></div>
+                    <div class="q-footer">
+                        <button
+                            class="btn-outline"
+                            id="btn-prev"
+                            onclick="goQ(-1)"
+                        >
+                            ← Sebelumnya
+                        </button>
+                        <button
+                            class="btn-outline"
+                            id="btn-next"
+                            onclick="goQ(1)"
+                        >
+                            Berikutnya →
+                        </button>
+                        <button class="btn-submit" onclick="confirmSubmit()">
+                            Akhiri & Lihat Nilai
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div id="results" class="screen">
+            <div class="result-container" id="result-body"></div>
+        </div>
+
+        <script>
+            const ALL_QUESTIONS = [
+                // ===== SUBTES BAHASA (1-5) =====
+                {
+                    id: 1,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Mudah",
+                    q: 'Sinonim (persamaan makna) dari kata "konkret" adalah...',
+                    opts: [
+                        "Nyata",
+                        "Abstrak",
+                        "Teoritis",
+                        "Imajinatif",
+                        "Simbolis",
+                    ],
+                    ans: 0,
+                    expl: '"Konkret" berarti berwujud, dapat diamati secara langsung. Sinonimnya adalah "nyata". Lawan katanya justru "abstrak" (pilihan B) — jebakan klasik yang menukar sinonim dengan antonim!',
+                },
+                {
+                    id: 2,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Sedang",
+                    q: 'Kalimat yang menggunakan kata "efektif" dengan paling tepat adalah...',
+                    opts: [
+                        "Obat itu efektif diminum tiga kali sehari",
+                        "Cara kerja tim itu sangat efektif dalam mencapai target produksi",
+                        "Buku itu ditulis secara efektif dan berwarna-warni",
+                        "Pertemuan digelar secara efektif di gedung mewah",
+                        "Pegawai itu bekerja secara efektif selama 12 jam penuh",
+                    ],
+                    ans: 1,
+                    expl: '"Efektif" = berhasil mencapai tujuan/sasaran. Pilihan B paling tepat karena menggambarkan cara kerja yang berhasil mencapai target. Pilihan A lebih cocok menggunakan "cukup/tepat". Pilihan C, D, E tidak menekankan pencapaian sasaran.',
+                },
+                {
+                    id: 3,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Sedang",
+                    q: 'Antonim (lawan kata) dari "kontroversial" adalah...',
+                    opts: [
+                        "Biasa",
+                        "Kontekstual",
+                        "Konsensual",
+                        "Kontradiktif",
+                        "Konvensional",
+                    ],
+                    ans: 2,
+                    expl: '"Kontroversial" = menimbulkan pro-kontra/perdebatan. Antonimnya "konsensual" = disepakati bersama. Jebakan: "konvensional" (E) berarti umum/tradisional, bukan lawan kontroversial. "Kontradiktif" (D) justru mirna maknanya dengan kontroversial.',
+                },
+                {
+                    id: 4,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Sulit",
+                    q: "Manakah kalimat yang paling baku menurut PUEBI (Pedoman Umum Ejaan Bahasa Indonesia)?",
+                    opts: [
+                        "Kami mempersilahkan Bapak untuk masuk",
+                        "Mereka saling berjabat tangan satu sama lain",
+                        "Ia mengucapkan terima kasih atas bantuan yang diterimanya",
+                        "Para hadirin dimohon untuk berdiri",
+                        "Semua daripada peserta harap registrasi ulang",
+                    ],
+                    ans: 2,
+                    expl: 'A — "mempersilahkan" salah → harusnya "mempersilakan". B — "saling... satu sama lain" redundan. D — "para hadirin" redundan (hadirin sudah jamak). E — "daripada" salah konteks. Hanya C yang bebas dari kesalahan ejaan dan struktur.',
+                },
+                {
+                    id: 5,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Sulit",
+                    q: '"Semakin tinggi tingkat pendidikan anggota koperasi, _____ kemampuan tata kelola koperasi akan semakin baik." Kata penghubung yang paling tepat untuk mengisi titik-titik adalah...',
+                    opts: ["karena", "sehingga", "maka", "walaupun", "namun"],
+                    ans: 2,
+                    expl: 'Kalimat ini menggunakan korelasi "semakin... semakin..." yang menyatakan hubungan sebanding. Konjungsi "maka" paling tepat untuk menghubungkan dua klausa berkorelasi positif. "Sehingga" dan "karena" menunjukkan sebab-akibat searah, bukan korelasi proporsional.',
+                },
+
+                // ===== SUBTES HITUNGAN (6-10) =====
+                {
+                    id: 6,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Mudah",
+                    q: "Jika 15% dari suatu bilangan adalah 45, maka 25% dari bilangan tersebut adalah...",
+                    opts: ["65", "70", "75", "80", "85"],
+                    ans: 2,
+                    expl: "Bilangan = 45 ÷ 0,15 = 300. Maka 25% × 300 = 75. Cara cepat: 45 adalah 15%, maka 5% = 15. Sehingga 25% = 5 × 15 = 75.",
+                },
+                {
+                    id: 7,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Sedang",
+                    q: "Sebuah toko memberi diskon 20%, kemudian diskon tambahan 10% dari harga setelah diskon pertama. Harga awal Rp500.000. Berapa yang harus dibayar?",
+                    opts: [
+                        "Rp340.000",
+                        "Rp345.000",
+                        "Rp350.000",
+                        "Rp355.000",
+                        "Rp360.000",
+                    ],
+                    ans: 4,
+                    expl: "Jebakan: banyak yang menjumlah 20%+10%=30%, lalu 500.000×70%=350.000 (SALAH). Yang benar: Diskon 1: 500.000×0,8=400.000. Diskon 2: 400.000×0,9=360.000. Diskon ganda ≠ penjumlahan persen!",
+                },
+                {
+                    id: 8,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Sedang",
+                    q: "Deret bilangan: 2, 5, 10, 17, 26, ___ . Bilangan selanjutnya adalah...",
+                    opts: ["35", "36", "37", "38", "39"],
+                    ans: 2,
+                    expl: "Selisih antar suku: +3, +5, +7, +9, +11 (pola selisih naik 2). Suku ke-6: 26 + 11 = 37. Pola ini disebut deret kuadrat: suku ke-n = n² + 1.",
+                },
+                {
+                    id: 9,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Sulit",
+                    q: "Rata-rata nilai 8 siswa adalah 75. Jika seorang siswa baru bergabung, rata-rata menjadi 76. Nilai siswa baru adalah...",
+                    opts: ["80", "82", "84", "86", "88"],
+                    ans: 2,
+                    expl: "Total 8 siswa = 8×75 = 600. Total 9 siswa = 9×76 = 684. Nilai siswa baru = 684−600 = 84. Rumus: nilai_baru = rata_baru × (n+1) − rata_lama × n.",
+                },
+                {
+                    id: 10,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Sulit",
+                    q: "Keran A mengisi bak dalam 6 jam, keran B dalam 4 jam, keran C menguras bak dalam 12 jam. Jika ketiganya dibuka bersamaan dari bak kosong, bak penuh dalam...",
+                    opts: ["2 jam", "3 jam", "4 jam", "5 jam", "6 jam"],
+                    ans: 1,
+                    expl: "Kecepatan per jam: A=1/6, B=1/4, C=−1/12 (menguras). Gabungan = 1/6+1/4−1/12 = 2/12+3/12−1/12 = 4/12 = 1/3 bak/jam. Waktu = 1÷(1/3) = 3 jam.",
+                },
+
+                // ===== SUBTES PENGETAHUAN UMUM (11-15) =====
+                {
+                    id: 11,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Mudah",
+                    q: "Organisasi internasional di bawah PBB yang bertanggung jawab di bidang kesehatan dunia adalah...",
+                    opts: ["UNESCO", "UNICEF", "WHO", "FAO", "ILO"],
+                    ans: 2,
+                    expl: "WHO (World Health Organization) = kesehatan. UNESCO = pendidikan/budaya. UNICEF = anak. FAO = pangan/pertanian. ILO = ketenagakerjaan. Hafal singkatan dan bidang utama masing-masing organisasi PBB!",
+                },
+                {
+                    id: 12,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Sedang",
+                    q: "Undang-Undang Perkoperasian yang saat ini berlaku di Indonesia adalah...",
+                    opts: [
+                        "UU No. 17 Tahun 2012",
+                        "UU No. 25 Tahun 1992",
+                        "UU No. 12 Tahun 1967",
+                        "UU No. 14 Tahun 2015",
+                        "UU No. 20 Tahun 2008",
+                    ],
+                    ans: 1,
+                    expl: "UU No. 25 Tahun 1992 tentang Perkoperasian masih berlaku sebagai hukum dasar koperasi Indonesia. UU No. 17 Tahun 2012 pernah dibuat namun dibatalkan MK karena bertentangan dengan konstitusi. Jebakan: banyak yang memilih UU 17/2012 karena lebih baru.",
+                },
+                {
+                    id: 13,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Sedang",
+                    q: "KDKMP (Koperasi Desa/Kelurahan Merah Putih) dibentuk berdasarkan instruksi...",
+                    opts: [
+                        "Inpres No. 5 Tahun 2024",
+                        "Inpres No. 9 Tahun 2025",
+                        "Inpres No. 17 Tahun 2025",
+                        "PP No. 7 Tahun 2026",
+                        "Kepres No. 14 Tahun 2025",
+                    ],
+                    ans: 1,
+                    expl: "Berdasarkan dokumen pedoman, KDKMP dibentuk berdasarkan Instruksi Presiden Nomor 9 Tahun 2025 tentang Percepatan Pembentukan Koperasi Desa/Kelurahan Merah Putih. Ini adalah informasi kontekstual yang langsung dari dokumen seleksi.",
+                },
+                {
+                    id: 14,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Sulit",
+                    q: "Tes Potensi Kognitif dalam seleksi KDKMP & KNMP 2026 menggunakan sistem...",
+                    opts: [
+                        "Essay dan wawancara panel",
+                        "CAT BKN dengan ambang batas 110",
+                        "Psikotes manual dengan kertas",
+                        "TOEFL-style adaptive test",
+                        "Ujian tulis terbuka dengan pengawas",
+                    ],
+                    ans: 1,
+                    expl: "Berdasarkan pedoman, seleksi menggunakan CAT BKN (Computer Assisted Test Badan Kepegawaian Negara) dengan nilai ambang batas 110. Setiap jawaban benar = 5 poin, salah/kosong = 0 poin.",
+                },
+                {
+                    id: 15,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Sulit",
+                    q: "Prinsip koperasi yang paling membedakannya dari perusahaan konvensional (PT) dalam pengambilan keputusan adalah...",
+                    opts: [
+                        "Berorientasi profit maksimal",
+                        "Satu anggota satu suara",
+                        "Dikendalikan oleh investor terbesar",
+                        "Modal utama dari obligasi",
+                        "Dikelola direksi profesional non-anggota",
+                    ],
+                    ans: 1,
+                    expl: 'Prinsip demokrasi koperasi "one member one vote" (satu anggota satu suara) adalah pembeda fundamental. Di PT, suara proporsional dengan kepemilikan saham — pemegang saham terbesar mendominasi. Di koperasi, setiap anggota memiliki hak suara yang sama.',
+                },
+
+                // ===== SUBTES POLA GAMBAR / BILANGAN (16-20) =====
+                {
+                    id: 16,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Mudah",
+                    q: "Deret: 3, 6, 12, 24, ___, 96. Angka yang tepat untuk mengisi titik-titik adalah...",
+                    opts: ["36", "42", "48", "54", "60"],
+                    ans: 2,
+                    expl: "Pola: setiap suku dikali 2 (deret geometri rasio 2). 24 × 2 = 48. Verifikasi: 48 × 2 = 96 ✓. Cara cepat: cek rasio antar suku pertama (6/3=2, 12/6=2) untuk memastikan pola.",
+                },
+                {
+                    id: 17,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Sedang",
+                    q: "Deret Fibonacci: 1, 1, 2, 3, 5, 8, 13, ___. Angka berikutnya adalah...",
+                    opts: ["18", "19", "20", "21", "22"],
+                    ans: 3,
+                    expl: "Deret Fibonacci: setiap suku = jumlah dua suku sebelumnya. 8+13 = 21. Ini adalah deret paling terkenal dalam matematika — muncul di alam (bunga matahari, spiral kerang). Selalu hapalkan 10 suku pertama: 1,1,2,3,5,8,13,21,34,55.",
+                },
+                {
+                    id: 18,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Sedang",
+                    q: "Pola bilangan: 100, 90, 81, 73, 66, ___. Angka berikutnya adalah...",
+                    opts: ["58", "59", "60", "61", "62"],
+                    ans: 2,
+                    expl: "Selisih antar suku: −10, −9, −8, −7, −6 (selisih berkurang 1 tiap langkah). Suku ke-6: 66 − 6 = 60. Pola selisih yang berubah secara teratur adalah ciri khas soal TPK tingkat menengah.",
+                },
+                {
+                    id: 19,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Sulit",
+                    q: "Deret: 2, 6, 12, 20, 30, 42, ___. Angka berikutnya adalah...",
+                    opts: ["52", "54", "56", "58", "60"],
+                    ans: 2,
+                    expl: "Selisih: +4, +6, +8, +10, +12, +14. Suku ke-7: 42+14 = 56. Pola lain: suku ke-n = n(n+1). Suku ke-7 = 7×8 = 56. Mengenali rumus tertutup lebih cepat daripada menghitung selisih satu per satu.",
+                },
+                {
+                    id: 20,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Sulit",
+                    q: "Jika dalam suatu pola: Baris 1 = [1], Baris 2 = [1,2,1], Baris 3 = [1,3,3,1], Baris 4 = [1,4,6,4,1]. Jumlah semua elemen di Baris 5 adalah...",
+                    opts: ["14", "16", "20", "32", "64"],
+                    ans: 1, // Should be 16
+                    expl: "Ini adalah Segitiga Pascal. Baris 5 = [1,5,10,10,5,1]. Jumlah = 32. Rumus: jumlah baris ke-n = 2^(n−1). Baris 5: 2^4 = 16. Jebakan: menghitung satu per satu dan salah menjumlah.",
+                },
+
+                // ===== SUBTES ABSTRAKSI RUANG (21-25) =====
+                {
+                    id: 21,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Mudah",
+                    q: "Berapa banyak segitiga yang terbentuk jika sebuah persegi dibagi oleh kedua diagonalnya?",
+                    opts: ["2", "3", "4", "6", "8"],
+                    ans: 2,
+                    expl: "Dua diagonal persegi berpotongan di tengah, membagi persegi menjadi tepat 4 segitiga sama kaki. Ini adalah pertanyaan abstraksi ruang paling dasar — visualisasikan dulu sebelum menjawab.",
+                },
+                {
+                    id: 22,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Sedang",
+                    q: "Sebuah balok 3×3×3 dicat seluruh permukaannya, lalu dipotong menjadi kubus 1×1×1. Berapa banyak kubus kecil yang memiliki tepat 2 sisi tercat?",
+                    opts: ["8", "12", "16", "20", "24"],
+                    ans: 1,
+                    expl: "Kubus 2 sisi tercat = berada di RUSUK (tepi) tapi bukan di SUDUT. Tiap rusuk balok 3×3×3 memiliki 1 kubus tengah (antara dua sudut). Ada 12 rusuk dalam sebuah balok → 12 kubus. Kubus di SUDUT = 3 sisi tercat (ada 8). Kubus di TENGAH sisi = 1 sisi tercat. Kubus di inti = 0 sisi tercat.",
+                },
+                {
+                    id: 23,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Sedang",
+                    q: "Sebuah kertas dilipat 2 kali (sekali ke kiri, sekali ke atas). Kemudian sebuah lubang dibuat tepat di tengah. Ketika dibuka, ada berapa lubang pada kertas?",
+                    opts: ["1", "2", "4", "6", "8"],
+                    ans: 2,
+                    expl: "Setiap lipatan menggandakan jumlah lubang. 1 lipatan → 2 lubang. 2 lipatan → 4 lubang. Rumus: 2^(jumlah_lipatan). Untuk 2 lipatan = 2² = 4 lubang.",
+                },
+                {
+                    id: 24,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Sulit",
+                    q: "Berapa jumlah maksimum bidang yang terbentuk jika sebuah pizza dipotong dengan 4 irisan lurus?",
+                    opts: ["8", "9", "10", "11", "12"],
+                    ans: 3,
+                    expl: "Rumus: n irisan menghasilkan maksimum n(n+1)/2 + 1 bidang. Untuk n=4: 4×5/2 + 1 = 10+1 = 11. Syarat: setiap irisan harus memotong semua irisan sebelumnya di titik yang berbeda.",
+                },
+                {
+                    id: 25,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Sulit",
+                    q: "Jarum pendek jam pada pukul 3.15 menunjuk ke sudut berapa dari posisi angka 12 (searah jarum jam)?",
+                    opts: ["87,5°", "90°", "92,5°", "95°", "97,5°"],
+                    ans: 4,
+                    expl: "Pada pukul 3.00, jarum pendek tepat di 90°. Setiap menit, jarum pendek bergerak 0,5° (360°/12jam/60menit). Pada 3.15: 90° + (15×0,5°) = 90° + 7,5° = 97,5°. Jebakan: tidak memperhitungkan pergerakan jarum jam setelah jam 3 tepat.",
+                },
+
+                // ===== SUBTES BENTUK & GEOMETRI (26-30) =====
+                {
+                    id: 26,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Mudah",
+                    q: "Manakah bangun datar berikut yang TIDAK memiliki sumbu simetri lipat?",
+                    opts: [
+                        "Lingkaran",
+                        "Persegi",
+                        "Segitiga sama sisi",
+                        "Jajar genjang",
+                        "Persegi panjang",
+                    ],
+                    ans: 3,
+                    expl: "Jajar genjang tidak memiliki sumbu simetri lipat karena tidak dapat dilipat sehingga kedua bagiannya bertepatan. Lingkaran memiliki tak hingga sumbu simetri. Persegi = 4. Segitiga sama sisi = 3. Persegi panjang = 2. Jebakan: jajar genjang memiliki simetri putar (rotasi 180°) tapi bukan simetri lipat!",
+                },
+                {
+                    id: 27,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Mudah",
+                    q: "Segitiga siku-siku memiliki sisi 3 cm, 4 cm, dan 5 cm. Luas segitiga tersebut adalah...",
+                    opts: ["5 cm²", "6 cm²", "7,5 cm²", "10 cm²", "12 cm²"],
+                    ans: 1,
+                    expl: "Dalam segitiga siku-siku 3-4-5, sisi siku-siku adalah 3 dan 4 (hipotenusa = 5). Luas = ½ × alas × tinggi = ½ × 3 × 4 = 6 cm². Pastikan menggunakan DUA sisi siku-siku, bukan hipotenusa!",
+                },
+                {
+                    id: 28,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Sedang",
+                    q: "Keliling lingkaran adalah 44 cm (gunakan π = 22/7). Luas lingkaran tersebut adalah...",
+                    opts: [
+                        "98 cm²",
+                        "121 cm²",
+                        "154 cm²",
+                        "176 cm²",
+                        "196 cm²",
+                    ],
+                    ans: 2,
+                    expl: "K=2πr → 44=2×(22/7)×r → r=7 cm. L=πr²=(22/7)×49=154 cm². Cara cepat: dari K=44, karena K=2πr, maka r=K/(2π)=44/(2×22/7)=7. Lalu L=πr²=22/7×49=154.",
+                },
+                {
+                    id: 29,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Sedang",
+                    q: "Sebuah persegi berisi sebuah lingkaran dalam (inscribed circle) dengan diameter sama dengan sisi persegi. Jika sisi persegi = 10 cm, luas daerah persegi di LUAR lingkaran adalah...",
+                    opts: [
+                        "100−25π cm²",
+                        "100−50π cm²",
+                        "25π−100 cm²",
+                        "50−25π cm²",
+                        "25π cm²",
+                    ],
+                    ans: 0,
+                    expl: "Sisi persegi=10 → r=5. Luas persegi=100. Luas lingkaran=πr²=25π. Daerah di luar = 100−25π ≈ 100−78,5 = 21,5 cm². Ingat: hasil harus positif, jadi 100−25π (bukan 25π−100).",
+                },
+                {
+                    id: 30,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Sulit",
+                    q: "Volume sebuah kerucut adalah 154 cm³ dan tingginya 12 cm. Jari-jari alas kerucut adalah... (π = 22/7)",
+                    opts: ["3,0 cm", "3,5 cm", "4,0 cm", "4,5 cm", "5,0 cm"],
+                    ans: 1,
+                    expl: "V=1/3×π×r²×t → 154=1/3×(22/7)×r²×12 → 154=(22/7)×r²×4 → r²=(154×7)/(22×4)=1078/88=12,25 → r=3,5 cm.",
+                },
+
+                // ===== TAMBAHAN TPK UNTUK MEMENUHI KISI-KISI (51-70) =====
+                {
+                    id: 51,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Mudah",
+                    q: 'Kata yang memiliki makna KONTRADIKSI dengan "optimis" adalah...',
+                    opts: [
+                        "Pesimis",
+                        "Realistis",
+                        "Idealis",
+                        "Pragmatis",
+                        "Ambisius",
+                    ],
+                    ans: 0,
+                    expl: '"Optimis" = berpandangan positif/harapan baik. Kontradiksi = "pesimis" (berpandangan negatif/tidak berharap). Jebakan: "realistis" bukan kontradiksi, tapi sikap tengah.',
+                },
+                {
+                    id: 52,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Sedang",
+                    q: 'Kalimat yang menggunakan kata "akibat" dengan tepat adalah...',
+                    opts: [
+                        "Akibat hujan deras, pertandingan ditunda",
+                        "Dia akibat bekerja keras sehingga sukses",
+                        "Akibat dari perbuatannya patut diacungi jempol",
+                        "Kita harus akibat pada aturan yang berlaku",
+                        "Akibat demi peristiwa terjadi di desa",
+                    ],
+                    ans: 0,
+                    expl: '"Akibat" digunakan sebagai konjungsi sebab-akibat (karena). Pilihan A benar: "Akibat hujan deras" = karena hujan deras. Pilihan lain salah konstruksi: "akibat" bukan kata kerja (B, D) dan bukan pengganti "dampak" (C).',
+                },
+                {
+                    id: 53,
+                    section: "TPK",
+                    sub: "Bahasa",
+                    diff: "Sulit",
+                    q: "Manakah paragraf yang paling koheren dan kohesif?",
+                    opts: [
+                        "Koperasi maju karena anggotanya aktif. Mereka rutin menabung. Simpanan digunakan untuk modal.",
+                        "Koperasi maju. Aktif anggotanya. Menabung rutin. Modal dari simpanan.",
+                        "Koperasi maju, aktif anggota, rutin menabung, modal simpanan.",
+                        "Maju koperasi karena aktif anggota, menabung rutin, modal simpanan.",
+                        "Koperasi maju. Karena aktif. Anggota menabung. Modal ada.",
+                    ],
+                    ans: 0,
+                    expl: 'Pilihan A memiliki kohesi (penggunaan kata ganti "mereka" merujuk pada anggota) dan koherensi (alur logis: koperasi maju → anggota aktif → rutin menabung → simpanan jadi modal). Pilihan lain terlalu fragmentaris.',
+                },
+                {
+                    id: 54,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Mudah",
+                    q: "Jika x + 3 = 10, maka nilai 2x - 5 adalah...",
+                    opts: ["9", "11", "13", "15", "17"],
+                    ans: 0,
+                    expl: "x + 3 = 10 → x = 7. Maka 2x - 5 = 2(7) - 5 = 14 - 5 = 9. Jawaban: pilihan A (9).",
+                },
+                {
+                    id: 55,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Sedang",
+                    q: "Sebuah toko memberikan diskon 30% untuk pembelian di atas Rp500.000. Jika Andi membeli barang seharga Rp800.000, berapa yang harus dibayar?",
+                    opts: [
+                        "Rp520.000",
+                        "Rp540.000",
+                        "Rp560.000",
+                        "Rp580.000",
+                        "Rp600.000",
+                    ],
+                    ans: 2,
+                    expl: "Diskon 30% dari Rp800.000 = 0,3 × 800.000 = Rp240.000. Yang dibayar = 800.000 - 240.000 = Rp560.000. Tips: langsung hitung 70% × 800.000 = 0,7 × 800.000 = 560.000.",
+                },
+                {
+                    id: 56,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Sulit",
+                    q: "Jika a:b = 2:3 dan b:c = 4:5, maka a:b:c = ...",
+                    opts: ["2:3:5", "4:6:15", "8:12:15", "2:4:5", "6:9:15"],
+                    ans: 2,
+                    expl: "Samakan nilai b. a:b = 2:3 = 8:12 (×4). b:c = 4:5 = 12:15 (×3). Maka a:b:c = 8:12:15. Teknik: cari KPK dari dua nilai b (3 dan 4 → 12), lalu sesuaikan rasio.",
+                },
+                {
+                    id: 57,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Mudah",
+                    q: "Ibukota Provinsi Kalimantan Timur adalah...",
+                    opts: [
+                        "Balikpapan",
+                        "Samarinda",
+                        "Bontang",
+                        "Tarakan",
+                        "Tanjung Redeb",
+                    ],
+                    ans: 1,
+                    expl: "Ibukota Kalimantan Timur adalah Samarinda. Balikpapan adalah kota terbesar kedua dan pusat industri migas. Tarakan di Kalimantan Utara. Bontang adalah kota industri. Tanjung Redeb di Berau.",
+                },
+                {
+                    id: 58,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Sedang",
+                    q: "Sila ke-3 Pancasila beserta lambangnya adalah...",
+                    opts: [
+                        "Ketuhanan Yang Maha Esa — Bintang",
+                        "Kemanusiaan yang adil dan beradab — Rantai",
+                        "Persatuan Indonesia — Pohon Beringin",
+                        "Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan — Kepala Banteng",
+                        "Keadilan sosial bagi seluruh rakyat Indonesia — Padi dan Kapas",
+                    ],
+                    ans: 2,
+                    expl: "Sila ke-3: Persatuan Indonesia — lambang Pohon Beringin. Sila 1: Bintang. Sila 2: Rantai. Sila 4: Kepala Banteng. Sila 5: Padi dan Kapas. Hafalkan urutan dan lambangnya!",
+                },
+                {
+                    id: 59,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Sulit",
+                    q: "Konstitusi yang saat ini berlaku di Indonesia adalah...",
+                    opts: [
+                        "UUD 1945 (sebelum amandemen)",
+                        "UUD 1945 (setelah amandemen 4 kali)",
+                        "UUD 1945 (amandemen 1 kali saja)",
+                        "UUD Sementara 1950",
+                        "Konstitusi RIS 1949",
+                    ],
+                    ans: 1,
+                    expl: "Yang berlaku saat ini adalah UUD 1945 setelah mengalami 4 kali amandemen (1999-2002). Amandemen mengubah sistem pemerintahan, wewenang lembaga negara, dan HAM. UUD 1945 asli (sebelum amandemen) sudah tidak berlaku sepenuhnya.",
+                },
+                {
+                    id: 60,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Mudah",
+                    q: "Deret: 5, 10, 20, 40, ___. Angka berikutnya adalah...",
+                    opts: ["60", "70", "80", "90", "100"],
+                    ans: 2,
+                    expl: "Pola deret geometri dengan rasio 2. 40 × 2 = 80. Ciri: setiap suku dikali bilangan tetap (rasio). Cek: 10/5=2, 20/10=2, 40/20=2 → rasio=2.",
+                },
+                {
+                    id: 61,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Sedang",
+                    q: "Deret: 1, 4, 9, 16, 25, ___. Angka berikutnya adalah...",
+                    opts: ["30", "33", "36", "39", "42"],
+                    ans: 2,
+                    expl: "Pola: kuadrat bilangan asli. 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, 6²=36. Rumus: suku ke-n = n². Ini deret kuadrat paling dasar yang sering muncul.",
+                },
+                {
+                    id: 62,
+                    section: "TPK",
+                    sub: "Pola & Deret",
+                    diff: "Sulit",
+                    q: "Deret: 2, 3, 5, 8, 12, 17, ___. Angka berikutnya adalah...",
+                    opts: ["21", "22", "23", "24", "25"],
+                    ans: 2,
+                    expl: "Selisih: +1, +2, +3, +4, +5, +6. Suku ke-7: 17 + 6 = 23. Pola selisih yang bertambah 1 secara konstan. Ini variasi deret dengan pola selisih berubah-ubah tapi teratur.",
+                },
+                {
+                    id: 63,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Mudah",
+                    q: "Jika sebuah kubus dipotong menjadi dua bagian sama besar oleh bidang yang sejajar dengan salah satu sisinya, maka terbentuk...",
+                    opts: [
+                        "Dua kubus kecil",
+                        "Dua balok",
+                        "Dua prisma segitiga",
+                        "Dua silinder",
+                        "Dua kerucut",
+                    ],
+                    ans: 1,
+                    expl: "Memotong kubus sejajar sisi menghasilkan dua BALOK (bukan kubus, karena dimensinya berubah: panjang/lebar tetap, tinggi menjadi setengahnya). Kubus kecil hanya terbentuk jika dipotong sejajar ketiga sisinya secara bersamaan.",
+                },
+                {
+                    id: 64,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Sedang",
+                    q: "Sebuah kertas berbentuk persegi panjang dilipat menjadi dua bagian sama besar. Jika luas kertas awal 40 cm², luas setelah dilipat adalah...",
+                    opts: ["10 cm²", "20 cm²", "30 cm²", "40 cm²", "80 cm²"],
+                    ans: 1,
+                    expl: "Melipat menjadi dua bagian sama besar = membagi luas menjadi 2. 40 cm² ÷ 2 = 20 cm². Lipatan tidak mengubah luas total kertas, tapi yang dimaksud di sini adalah luas satu bagian setelah dilipat.",
+                },
+                {
+                    id: 65,
+                    section: "TPK",
+                    sub: "Abstraksi Ruang",
+                    diff: "Sulit",
+                    q: "Sebuah kubus dengan panjang rusuk 4 cm dicat semua sisinya. Kemudian kubus dipotong menjadi kubus-kubus kecil berukuran 1×1×1 cm. Berapa kubus kecil yang tidak memiliki sisi tercat sama sekali?",
+                    opts: ["4", "8", "12", "16", "20"],
+                    ans: 1,
+                    expl: "Kubus 4×4×4 = 64 kubus kecil. Kubus yang TIDAK tercat = kubus di BAGIAN DALAM (tidak menyentuh permukaan luar). Bagian dalam = (4-2)×(4-2)×(4-2) = 2×2×2 = 8 kubus. Rumus: (n-2)³ untuk kubus sisi n.",
+                },
+                {
+                    id: 66,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Mudah",
+                    q: "Sebuah persegi panjang memiliki panjang 8 cm dan lebar 5 cm. Kelilingnya adalah...",
+                    opts: ["13 cm", "18 cm", "26 cm", "30 cm", "40 cm"],
+                    ans: 2,
+                    expl: "Keliling persegi panjang = 2×(panjang+lebar) = 2×(8+5) = 2×13 = 26 cm. Jebakan: 8+5=13 (pilihan A) adalah setengah keliling, bukan keliling penuh.",
+                },
+                {
+                    id: 67,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Sedang",
+                    q: "Luas sebuah trapesium adalah 48 cm². Jika tinggi trapesium 6 cm dan sisi sejajar pendek 5 cm, maka panjang sisi sejajar panjang adalah...",
+                    opts: ["8 cm", "10 cm", "11 cm", "12 cm", "13 cm"],
+                    ans: 2,
+                    expl: "L = ½×(a+b)×t → 48 = ½×(5+b)×6 → 48 = 3×(5+b) → 16 = 5+b → b = 11 cm. Jawaban: 11 cm (pilihan C).",
+                },
+                {
+                    id: 68,
+                    section: "TPK",
+                    sub: "Bentuk & Geometri",
+                    diff: "Sulit",
+                    q: "Sebuah lingkaran memiliki keliling 88 cm (π = 22/7). Luas daerah yang dibatasi oleh busur 90° (seperempat lingkaran) adalah...",
+                    opts: [
+                        "154 cm²",
+                        "308 cm²",
+                        "616 cm²",
+                        "77 cm²",
+                        "1540 cm²",
+                    ],
+                    ans: 0,
+                    expl: "K=2πr → 88=2×(22/7)×r → r=14 cm. Luas penuh = πr² = (22/7)×196 = 616 cm². Luas 90° (¼ lingkaran) = 616÷4 = 154 cm².",
+                },
+                {
+                    id: 69,
+                    section: "TPK",
+                    sub: "Pengetahuan Umum",
+                    diff: "Sedang",
+                    q: "Menteri Koperasi dan UKM Indonesia saat ini (2025-2026) adalah...",
+                    opts: [
+                        "Sri Mulyani Indrawati",
+                        "Budi Santoso",
+                        "Teten Masduki",
+                        "Erick Thohir",
+                        "Sandiaga Uno",
+                    ],
+                    ans: 2,
+                    expl: "Teten Masduki adalah Menteri Koperasi dan UKM periode 2019-2024 dan tetap menjabat dalam kabinet 2025-2026. Sri Mulyani = Menteri Keuangan. Erick Thohir = Menteri BUMN. Sandiaga Uno = Menteri Pariwisata.",
+                },
+                {
+                    id: 70,
+                    section: "TPK",
+                    sub: "Hitungan",
+                    diff: "Sulit",
+                    q: "Sebuah proyek dapat diselesaikan oleh 12 pekerja dalam 20 hari. Jika proyek harus selesai dalam 15 hari, berapa tambahan pekerja yang diperlukan?",
+                    opts: ["3", "4", "5", "6", "8"],
+                    ans: 1,
+                    expl: "Total pekerjaan = 12×20 = 240 orang-hari. Untuk 15 hari: 240÷15 = 16 pekerja. Tambahan = 16-12 = 4 pekerja. Rumus: P1×H1 = P2×H2 (inversi pekerja dan waktu).",
+                },
+
+                // ===== TES MANAJEMEN KOPERASI (31-50) =====
+                {
+                    id: 31,
+                    section: "Manajemen Koperasi",
+                    sub: "Kelembagaan",
+                    diff: "Mudah",
+                    q: "Modal dasar koperasi yang paling utama bersumber dari...",
+                    opts: [
+                        "Pinjaman bank komersial",
+                        "Hibah dari pemerintah pusat",
+                        "Simpanan anggota koperasi",
+                        "Obligasi yang diperdagangkan",
+                        "Saham yang dijual ke publik",
+                    ],
+                    ans: 2,
+                    expl: "Koperasi bersifat mandiri — modal utamanya dari simpanan anggota (simpanan pokok, wajib, dan sukarela). Ini membedakan koperasi dari perusahaan yang mengandalkan modal eksternal. Pinjaman bank boleh dilakukan tetapi sebagai tambahan, bukan sumber utama.",
+                },
+                {
+                    id: 32,
+                    section: "Manajemen Koperasi",
+                    sub: "Kelembagaan",
+                    diff: "Mudah",
+                    q: "Kekuasaan tertinggi dalam organisasi koperasi dipegang oleh...",
+                    opts: [
+                        "Dewan Pengawas",
+                        "Pengurus harian",
+                        "Rapat Anggota",
+                        "Dinas Koperasi setempat",
+                        "Pemerintah daerah",
+                    ],
+                    ans: 2,
+                    expl: "Rapat Anggota adalah pemegang kekuasaan tertinggi koperasi karena setiap anggota memiliki satu suara (one member one vote). Pengurus dan Pengawas dipilih oleh dan bertanggung jawab kepada Rapat Anggota.",
+                },
+                {
+                    id: 33,
+                    section: "Manajemen Koperasi",
+                    sub: "SHU",
+                    diff: "Mudah",
+                    q: "Sisa Hasil Usaha (SHU) koperasi dibagikan kepada anggota berdasarkan...",
+                    opts: [
+                        "Jumlah simpanan pokok yang disetor",
+                        "Lama menjadi anggota koperasi",
+                        "Besarnya kontribusi/transaksi anggota dengan koperasi",
+                        "Jabatan anggota dalam kepengurusan",
+                        "Jumlah simpanan wajib bulanan",
+                    ],
+                    ans: 2,
+                    expl: "Ini adalah prinsip fundamental koperasi: SHU dibagi sesuai jasa/partisipasi anggota (volume transaksi), bukan berdasarkan modal/simpanan. Ini membedakannya dari dividen PT yang berdasarkan kepemilikan saham.",
+                },
+                {
+                    id: 34,
+                    section: "Manajemen Koperasi",
+                    sub: "Prinsip Koperasi",
+                    diff: "Sedang",
+                    q: "Berikut yang BUKAN merupakan prinsip koperasi menurut UU No. 25 Tahun 1992 adalah...",
+                    opts: [
+                        "Keanggotaan bersifat sukarela dan terbuka",
+                        "Pengelolaan dilakukan secara demokratis",
+                        "Pembagian SHU dilakukan proporsional terhadap besaran modal",
+                        "Pendidikan perkoperasian",
+                        "Kerja sama antar koperasi",
+                    ],
+                    ans: 2,
+                    expl: "SHU dibagi berdasarkan JASA/PARTISIPASI anggota, BUKAN berdasarkan modal. Pilihan C adalah prinsip PT/perusahaan saham, bukan koperasi. Tujuh prinsip koperasi meliputi: sukarela, demokratis, balas jasa terbatas, pembagian SHU proporsional jasa, mandiri, pendidikan, dan kerja sama antar koperasi.",
+                },
+                {
+                    id: 35,
+                    section: "Manajemen Koperasi",
+                    sub: "Modal",
+                    diff: "Sedang",
+                    q: "Perbedaan mendasar antara simpanan pokok dan simpanan wajib koperasi adalah...",
+                    opts: [
+                        "Simpanan pokok dibayar sekali saat masuk; simpanan wajib dibayar secara rutin",
+                        "Simpanan pokok dapat ditarik kapan saja; simpanan wajib tidak dapat ditarik",
+                        "Simpanan pokok mendapat bunga lebih tinggi dari simpanan wajib",
+                        "Simpanan wajib hanya untuk anggota aktif saja",
+                        "Keduanya dapat ditarik kapan saja oleh anggota",
+                    ],
+                    ans: 0,
+                    expl: "Simpanan pokok = dibayar SEKALI saat pertama masuk menjadi anggota (nilainya sama untuk semua). Simpanan wajib = dibayar secara RUTIN (bulanan/mingguan) selama menjadi anggota. Keduanya tidak dapat ditarik selama masih menjadi anggota.",
+                },
+                {
+                    id: 36,
+                    section: "Manajemen Koperasi",
+                    sub: "Kelembagaan",
+                    diff: "Sedang",
+                    q: "Fungsi utama Dewan Pengawas dalam struktur organisasi koperasi adalah...",
+                    opts: [
+                        "Mengelola operasional koperasi sehari-hari",
+                        "Mewakili koperasi dalam perjanjian dengan pihak ketiga",
+                        "Melakukan pengawasan terhadap pelaksanaan kebijakan pengurus",
+                        "Menentukan besaran SHU yang dibagikan",
+                        "Memutuskan penerimaan anggota baru",
+                    ],
+                    ans: 2,
+                    expl: "Pengawas bertugas mengawasi jalannya koperasi dan memeriksa pembukuan. Pengelolaan operasional = tugas Pengurus. Perwakilan hukum = Pengurus. Penentuan SHU = Rapat Anggota. Penerimaan anggota = sesuai AD/ART yang ditetapkan Rapat Anggota.",
+                },
+                {
+                    id: 37,
+                    section: "Manajemen Koperasi",
+                    sub: "Keuangan",
+                    diff: "Sedang",
+                    q: "Dana cadangan koperasi yang disisihkan dari SHU bertujuan utama untuk...",
+                    opts: [
+                        "Dibagikan kepada anggota aktif di akhir tahun",
+                        "Memperkuat ekuitas dan menanggung risiko kerugian koperasi",
+                        "Membayar gaji dan insentif pengurus harian",
+                        "Diinvestasikan di pasar modal dan reksa dana",
+                        "Membiayai kegiatan sosial dan kemasyarakatan",
+                    ],
+                    ans: 1,
+                    expl: 'Dana cadangan berfungsi sebagai "bantalan" keuangan — memperkuat modal sendiri (ekuitas) dan digunakan saat koperasi mengalami kerugian. Ini berbeda dengan dana sosial yang memang untuk kegiatan sosial. Dana cadangan tidak boleh dibagikan kepada anggota.',
+                },
+                {
+                    id: 38,
+                    section: "Manajemen Koperasi",
+                    sub: "Keuangan",
+                    diff: "Sedang",
+                    q: "Jika koperasi mengalami kerugian bersih pada tahun buku, maka distribusi SHU kepada anggota adalah...",
+                    opts: [
+                        "Tetap dibagikan dari dana cadangan yang ada",
+                        "Tidak ada SHU yang dibagikan; kerugian ditanggung dari dana cadangan",
+                        "Pengurus bertanggung jawab menutupi kerugian secara pribadi",
+                        "Anggota dikenai iuran tambahan wajib untuk menutupi kerugian",
+                        "Koperasi otomatis dibubarkan oleh Dinas Koperasi",
+                    ],
+                    ans: 1,
+                    expl: "SHU hanya dapat dibagikan jika ada hasil usaha positif (surplus). Kerugian ditanggung dari dana cadangan yang telah disisihkan sebelumnya. Koperasi tidak membebankan kerugian kepada anggota secara personal, dan kerugian tidak otomatis mengakibatkan pembubaran.",
+                },
+                {
+                    id: 39,
+                    section: "Manajemen Koperasi",
+                    sub: "Laporan Keuangan",
+                    diff: "Sedang",
+                    q: "Laporan keuangan koperasi yang minimal harus disampaikan dalam Rapat Anggota Tahunan (RAT) mencakup...",
+                    opts: [
+                        "Hanya neraca/laporan posisi keuangan akhir tahun",
+                        "Laporan laba rugi dan laporan gaji pengurus saja",
+                        "Neraca, laporan perhitungan SHU, dan laporan arus kas",
+                        "Hanya laporan inventaris aset tetap",
+                        "Laporan pajak dan laporan kepatuhan hukum",
+                    ],
+                    ans: 2,
+                    expl: "Laporan keuangan koperasi yang lengkap untuk RAT minimal mencakup: neraca (laporan posisi keuangan), perhitungan SHU (laporan surplus-defisit), dan laporan arus kas. Ini sesuai standar akuntansi koperasi Indonesia (SAK ETAP).",
+                },
+                {
+                    id: 40,
+                    section: "Manajemen Koperasi",
+                    sub: "Kelembagaan",
+                    diff: "Sedang",
+                    q: "Koperasi primer adalah jenis koperasi yang beranggotakan...",
+                    opts: [
+                        "Koperasi-koperasi primer yang bergabung membentuk koperasi lebih besar",
+                        "Minimal 100 orang perorangan dari berbagai daerah",
+                        "Orang-orang secara langsung dengan minimal 20 orang pendiri",
+                        "Badan hukum koperasi dan perseorangan sekaligus",
+                        "Hanya anggota yang memiliki usaha komersial aktif",
+                    ],
+                    ans: 2,
+                    expl: "Koperasi primer = anggotanya orang-perorang langsung (minimal 20 orang pendiri). Koperasi sekunder = anggotanya koperasi-koperasi primer. Ini hierarki kelembagaan koperasi di Indonesia yang penting untuk dipahami.",
+                },
+                {
+                    id: 41,
+                    section: "Manajemen Koperasi",
+                    sub: "Tata Kelola",
+                    diff: "Sulit",
+                    q: "Dalam tata kelola koperasi yang baik (Good Cooperative Governance), prinsip transparansi diterapkan melalui...",
+                    opts: [
+                        "Menyembunyikan informasi keuangan dari anggota yang tidak aktif bertransaksi",
+                        "Hanya melaporkan keuangan kepada Dinas Koperasi tanpa anggota umum",
+                        "Menyampaikan laporan keuangan yang dapat diakses dan dipahami seluruh anggota",
+                        "Menerapkan sistem komunikasi satu arah dari pengurus ke anggota",
+                        "Pengurus membuat keputusan tanpa konsultasi anggota untuk efisiensi",
+                    ],
+                    ans: 2,
+                    expl: "Transparansi = keterbukaan informasi kepada seluruh pemangku kepentingan. Dalam koperasi, semua anggota berhak mendapat informasi keuangan yang akurat dan mudah dipahami. Ini bukan hanya kewajiban kepada regulator, tapi kepada seluruh anggota sebagai pemilik koperasi.",
+                },
+                {
+                    id: 42,
+                    section: "Manajemen Koperasi",
+                    sub: "Pengembangan Usaha",
+                    diff: "Sulit",
+                    q: "Strategi paling tepat bagi KDKMP untuk meningkatkan pelayanan anggota di era digital adalah...",
+                    opts: [
+                        "Fokus hanya pada transaksi tunai untuk menghindari risiko siber",
+                        "Memanfaatkan platform digital untuk memperluas jangkauan dan efisiensi layanan",
+                        "Menyerahkan seluruh pengelolaan digital kepada perusahaan teknologi besar",
+                        "Tidak perlu transformasi digital karena koperasi bersifat lokal",
+                        "Menggunakan teknologi hanya jika ada paksaan regulasi",
+                    ],
+                    ans: 1,
+                    expl: "Transformasi digital bukan pilihan, melainkan kebutuhan. KDKMP perlu memanfaatkan platform digital untuk: pencatatan transaksi, komunikasi anggota, pemasaran produk, dan pelaporan keuangan. Ini meningkatkan efisiensi sekaligus memperluas jangkauan layanan tanpa mengorbankan kedaulatan data.",
+                },
+                {
+                    id: 43,
+                    section: "Manajemen Koperasi",
+                    sub: "Manajemen Risiko",
+                    diff: "Sulit",
+                    q: "Risiko utama KDKMP sebagai perantara (intermediary) antara petani/produsen dengan pasar adalah...",
+                    opts: [
+                        "Risiko pengurus koperasi mengundurkan diri secara mendadak",
+                        "Risiko fluktuasi harga komoditas yang merugikan koperasi",
+                        "Risiko pemerintah mencabut izin usaha koperasi",
+                        "Risiko anggota keluar secara massal dari koperasi",
+                        "Risiko gedung/kantor koperasi mengalami kerusakan",
+                    ],
+                    ans: 1,
+                    expl: "Sebagai intermediary, KDKMP membeli dari petani dan menjual ke pasar — rentang harga komoditas pertanian yang fluktuatif adalah risiko terbesar. Jika harga jual turun setelah KDKMP membeli dari petani, koperasi menanggung selisihnya. Ini memerlukan strategi hedging dan manajemen stok yang cermat.",
+                },
+                {
+                    id: 44,
+                    section: "Manajemen Koperasi",
+                    sub: "Pengembangan Kelembagaan",
+                    diff: "Sulit",
+                    q: "Perbedaan mendasar antara SHU koperasi dengan dividen perusahaan terbatas (PT) terletak pada...",
+                    opts: [
+                        "SHU hanya untuk pengurus; dividen untuk semua pemegang saham",
+                        "SHU berdasarkan partisipasi/jasa anggota; dividen berdasarkan kepemilikan modal",
+                        "SHU tidak kena pajak; dividen dikenai pajak penuh",
+                        "SHU nilainya tetap setiap tahun; dividen berfluktuasi bebas",
+                        "SHU hanya dari kegiatan utama; dividen dari semua sumber pendapatan",
+                    ],
+                    ans: 1,
+                    expl: 'Ini adalah pertanyaan konseptual terpenting! SHU = proporsional terhadap PARTISIPASI (volume transaksi anggota). Dividen PT = proporsional terhadap KEPEMILIKAN SAHAM. Perbedaan ini mencerminkan filosofi koperasi: "satu anggota satu suara, manfaat sesuai kontribusi" vs "uang bekerja untuk uang".',
+                },
+                {
+                    id: 45,
+                    section: "Manajemen Koperasi",
+                    sub: "Perencanaan Usaha",
+                    diff: "Sulit",
+                    q: "Dalam penyusunan Rencana Kerja dan Anggaran Pendapatan Belanja (RKAPB) koperasi, aspek yang paling kritis untuk diperhatikan adalah...",
+                    opts: [
+                        "Kepuasan estetika laporan terhadap pejabat pemerintah",
+                        "Kesesuaian rencana kerja dengan kebutuhan nyata dan kemampuan anggota",
+                        "Besaran anggaran yang mengesankan untuk menarik investor eksternal",
+                        "Jumlah jabatan dan pegawai yang akan direkrut pengurus",
+                        "Perbandingan dengan anggaran koperasi di daerah lain",
+                    ],
+                    ans: 1,
+                    expl: 'RKAPB yang baik harus "membumi" — berbasis kebutuhan real anggota dan kapasitas koperasi. Anggaran yang terlalu ambisius tanpa dasar yang kuat justru berbahaya. Prinsip: rencanakan yang realistis, laksanakan yang direncanakan, laporkan yang dilaksanakan.',
+                },
+                {
+                    id: 46,
+                    section: "Manajemen Koperasi",
+                    sub: "Pelayanan Anggota",
+                    diff: "Sedang",
+                    q: 'Konsep "member benefit" dalam pelayanan koperasi paling tepat diwujudkan melalui...',
+                    opts: [
+                        "Memberikan kredit bebas bunga kepada seluruh masyarakat umum",
+                        "Memberikan layanan berkualitas dengan harga kompetitif yang menguntungkan anggota",
+                        "Mengutamakan keuntungan koperasi di atas kepentingan anggota",
+                        "Memberikan SHU dalam jumlah sama rata kepada semua anggota",
+                        "Membatasi layanan hanya untuk anggota yang membayar iuran tertinggi",
+                    ],
+                    ans: 1,
+                    expl: '"Member benefit" = manfaat nyata yang diterima anggota dari keanggotaan koperasi. Ini bisa berupa: harga beli lebih murah, harga jual lebih tinggi, akses kredit lebih mudah, dan SHU. Layanan harus untuk ANGGOTA, bukan publik umum (yang membedakan dengan lembaga sosial).',
+                },
+                {
+                    id: 47,
+                    section: "Manajemen Koperasi",
+                    sub: "Audit & Akuntabilitas",
+                    diff: "Sedang",
+                    q: "Audit terhadap laporan keuangan koperasi yang ideal dilakukan oleh...",
+                    opts: [
+                        "Hanya Kantor Akuntan Publik (KAP) eksternal independen",
+                        "Dewan Pengawas internal dan/atau KAP eksternal",
+                        "Badan Pemeriksa Keuangan (BPK) secara rutin",
+                        "Hanya unit pengendalian internal koperasi",
+                        "Dinas Koperasi daerah setempat",
+                    ],
+                    ans: 1,
+                    expl: "Audit koperasi dilakukan dua lapis: (1) Dewan Pengawas (internal) sebagai pengawas tetap, dan (2) Akuntan Publik/KAP (eksternal) untuk audit independen. BPK hanya mengaudit lembaga pemerintah. Dinas Koperasi melakukan pembinaan, bukan audit rutin.",
+                },
+                {
+                    id: 48,
+                    section: "Manajemen Koperasi",
+                    sub: "SDM Koperasi",
+                    diff: "Sedang",
+                    q: "Kompetensi utama yang dibutuhkan Manajer KDKMP untuk menjalankan fungsi kelembagaan koperasi adalah...",
+                    opts: [
+                        "Keahlian investasi di pasar modal dan saham",
+                        "Kemampuan negosiasi ekspor-impor internasional",
+                        "Pemahaman tata kelola koperasi, keuangan, dan pemberdayaan anggota",
+                        "Penguasaan teknologi AI dan machine learning",
+                        "Keahlian pemasaran produk digital semata",
+                    ],
+                    ans: 2,
+                    expl: "Manajer KDKMP perlu menguasai: prinsip dan tata kelola koperasi, manajemen keuangan dasar, pemberdayaan anggota, pengelolaan usaha, dan koordinasi kelembagaan. Ini adalah kompetensi inti yang tertuang dalam tes Manajemen Koperasi dalam seleksi KDKMP 2026.",
+                },
+                {
+                    id: 49,
+                    section: "Manajemen Koperasi",
+                    sub: "Keuangan",
+                    diff: "Sulit",
+                    q: "Total SHU koperasi = Rp100 juta. Alokasi: 40% dana cadangan, 10% dana pendidikan, 50% dibagi ke anggota sesuai transaksi. Jika anggota A bertransaksi Rp2 juta dari total transaksi anggota Rp500 juta, maka SHU yang diterima anggota A adalah...",
+                    opts: [
+                        "Rp100.000",
+                        "Rp150.000",
+                        "Rp200.000",
+                        "Rp250.000",
+                        "Rp300.000",
+                    ],
+                    ans: 2,
+                    expl: "SHU untuk anggota = 50%×100 juta = Rp50 juta. Porsi A = (2/500)×50 juta = 0,004×50.000.000 = Rp200.000. Rumus: SHU_anggota = (transaksi_a/total_transaksi)×SHU_bagian_anggota.",
+                },
+                {
+                    id: 50,
+                    section: "Manajemen Koperasi",
+                    sub: "Pengembangan Kelembagaan",
+                    diff: "Sulit",
+                    q: "Tahapan ideal pengembangan kemandirian KDKMP yang baru dibentuk adalah...",
+                    opts: [
+                        "Langsung mandiri tanpa perlu fase penguatan karena sudah ada modal pemerintah",
+                        "Mengandalkan subsidi pemerintah selamanya sebagai mitra strategis",
+                        "Dari fase pendampingan → penguatan kapasitas → mandiri → berkembang menjadi koperasi unggul",
+                        "Langsung melakukan ekspansi usaha ke berbagai bidang sejak awal",
+                        "Merger dengan perusahaan swasta besar sejak tahun pertama",
+                    ],
+                    ans: 2,
+                    expl: 'Pengembangan koperasi baru memerlukan tahapan yang terstruktur: (1) Pendampingan intens pada awal. (2) Penguatan kapasitas SDM dan sistem. (3) Kemandirian operasional dan finansial. (4) Pengembangan dan ekspansi terencana. Koperasi yang "dipaksakan" mandiri terlalu cepat berisiko gagal.',
+                },
+            ];
+
+            const MINI_IDS = [
+                2, 7, 9, 16, 19, 24, 25, 27, 29, 34, 37, 40, 41, 44, 49, 51, 55,
+                58, 61, 65,
+            ];
+
+            let mode = "full";
+            let currentQ = 0;
+            let answers = {};
+            let flagged = {};
+            let timerInterval = null;
+            let timeLeft = 3000;
+            let testQs = [];
+
+            function show(id) {
+                document
+                    .querySelectorAll(".screen")
+                    .forEach((s) => s.classList.remove("active"));
+                document.getElementById(id).classList.add("active");
+            }
+            function showStudy() {
+                buildStudy("tpk");
+                show("study");
+            }
+
+            function showTab(tab, btn) {
+                document
+                    .querySelectorAll(".tab-btn")
+                    .forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                buildStudy(tab);
+            }
+
+            const subColors = {
+                Bahasa: "var(--blue)",
+                Hitungan: "var(--teal)",
+                "Pengetahuan Umum": "var(--amber)",
+                "Pola & Deret": "var(--purple)",
+                "Abstraksi Ruang": "var(--coral, #f97316)",
+                "Bentuk & Geometri": "var(--green)",
+            };
+
+            function buildStudy(tab) {
+                const el = document.getElementById("study-content");
+                const isTpk = tab === "tpk";
+                const qs = ALL_QUESTIONS.filter((q) =>
+                    isTpk
+                        ? q.section === "TPK"
+                        : q.section === "Manajemen Koperasi",
+                );
+                const subs = [...new Set(qs.map((q) => q.sub))];
+
+                const insights = isTpk
+                    ? {
+                          title: "Konsep Inti TPK yang Sering Keluar",
+                          items: [
+                              "Deret aritmetika (selisih tetap) vs geometri (rasio tetap) — kenali polanya dalam 2 suku pertama",
+                              "Soal persentase: hati-hati diskon bertingkat (tidak bisa dijumlah!)",
+                              "Rumus lingkaran: K=2πr, L=πr² — jangan tertukar",
+                              "Segitiga siku-siku: sisi siku² + sisi siku² = hipotenusa². Ingat: 3-4-5, 5-12-13, 8-15-17",
+                              "Soal kerja bersama: gunakan konsep kecepatan (1/waktu) lalu jumlahkan",
+                              "Sinonim vs antonim — jebakan terbesar di subtes bahasa",
+                          ],
+                      }
+                    : {
+                          title: "Konsep Inti Manajemen Koperasi yang Sering Keluar",
+                          items: [
+                              "SHU = berdasarkan JASA/PARTISIPASI, bukan modal. Ini beda dengan dividen PT!",
+                              "7 Prinsip Koperasi ICA yang diadopsi UU 25/1992 — hafalkan semua",
+                              "Hierarki organisasi: Rapat Anggota > Pengurus & Pengawas",
+                              "Simpanan: Pokok (sekali saat masuk) vs Wajib (rutin) vs Sukarela (bebas)",
+                              "Koperasi primer (anggota orang) vs sekunder (anggota koperasi)",
+                              "Good Cooperative Governance: transparansi, akuntabilitas, responsibilitas, kemandirian",
+                          ],
+                      };
+
+                const traps = isTpk
+                    ? {
+                          title: "Pola Jebakan (Trap) Soal TPK",
+                          items: [
+                              "Diskon ganda: 20%+10% ≠ 30%. Harus dihitung bertahap!",
+                              "Sinonim vs Antonim: soal meminta sinonim tapi pilihan mayoritas adalah antonim",
+                              "Jarum jam: selalu hitung pergerakan jarum jam setelah jam tertentu",
+                              "Soal rata-rata: gunakan total nilai, jangan rata-rata dari rata-rata",
+                              "Sumbu simetri lipat vs simetri putar — jajar genjang hanya punya simetri putar",
+                              "Segitiga siku-siku: jangan gunakan hipotenusa sebagai alas/tinggi untuk luas!",
+                          ],
+                      }
+                    : {
+                          title: "Pola Jebakan (Trap) Soal Manajemen Koperasi",
+                          items: [
+                              "SHU berbasis partisipasi sering dikacaukan dengan dividen berbasis modal",
+                              "UU Koperasi: UU 17/2012 sudah dibatalkan MK — yang berlaku UU 25/1992",
+                              "Dewan Pengawas ≠ Pengurus. Pengawas mengawasi, Pengurus mengelola",
+                              "Dana cadangan ≠ dana sosial. Dana cadangan untuk menanggung risiko kerugian",
+                              "Koperasi primer vs sekunder: jebakan di soal tentang syarat anggota",
+                              "Transparansi bukan hanya ke pemerintah, tapi ke seluruh anggota koperasi",
+                          ],
+                      };
+
+                let html = `
+                <div class="section-header">
+                <div class="section-tag">${isTpk ? "Tes Potensi Kognitif — 50 Soal / 6 Subtes" : "Tes Manajemen Koperasi — 20 Soal"}</div>
+                <h2 class="section-title2">${isTpk ? "Latihan Soal Tes Potensi Kognitif (TPK)" : "Latihan Soal Manajemen Koperasi KDKMP"}</h2>
+                <p class="section-desc">${isTpk ? "Mencakup 6 subtes: Bahasa, Hitungan, Pengetahuan Umum, Pola & Deret, Abstraksi Ruang, dan Bentuk & Geometri. Nilai ambang batas: 110 (=22 benar × 5 poin)." : "20 butir soal sesuai ketentuan. Bobot: benar=5, salah/kosong=0."}</p>
+              </div>
+                <div class="insight-box">
+                  <h4>💡 ${insights.title}</h4>
+                  ${insights.items.map((i) => `<p>→ ${i}</p>`).join("")}
+                </div>
+                <div class="trap-box">
+                  <h4>⚠️ ${traps.title}</h4>
+                  ${traps.items.map((i) => `<p>→ ${i}</p>`).join("")}
+                </div>
+              `;
+
+                let qNum = 1;
+                subs.forEach((sub) => {
+                    const subQs = qs.filter((q) => q.sub === sub);
+                    html += `<div class="section-sep"><span>${isTpk ? "SUBTES" : "TOPIK"}: ${sub} (${subQs.length} Soal)</span></div>`;
+                    subQs.forEach((q) => {
+                        html += `<div class="q-card">
+                    <div class="q-meta">
+                      <span class="q-num">Soal ${qNum++}</span>
+                      <span class="q-diff diff-${q.diff.toLowerCase()}">${q.diff}</span>
+                      <span style="font-size:12px;color:var(--hint);margin-left:auto;">${q.sub}</span>
+                    </div>
+                    <div class="q-text">${q.q}</div>
+                    <div class="q-options">
+                      ${q.opts
+                          .map(
+                              (
+                                  o,
+                                  i,
+                              ) => `<div class="q-option ${i === q.ans ? "correct" : ""}">
+                        <span class="opt-key">${String.fromCharCode(65 + i)}.</span>
+                        <span>${o}</span>
+                        ${i === q.ans ? '<span style="margin-left:auto;font-size:12px;font-weight:700;">✓</span>' : ""}
+                      </div>`,
+                          )
+                          .join("")}
+                    </div>
+                    <div class="explanation">
+                      <h5>Pembahasan</h5>
+                      <p>${q.expl}</p>
+                    </div>
+                  </div>`;
+                    });
+                });
+
+                el.innerHTML = html;
+            }
+
+            function startTest(m) {
+                mode = m;
+                testQs =
+                    m === "mini"
+                        ? ALL_QUESTIONS.filter((q) => MINI_IDS.includes(q.id))
+                        : [...ALL_QUESTIONS];
+                answers = {};
+                flagged = {};
+                currentQ = 0;
+                timeLeft = m === "mini" ? 900 : 3000;
+                buildTestUI();
+                show("test");
+                startTimer();
+            }
+
+            function buildTestUI() {
+                const badge = document.getElementById("section-badge");
+                badge.textContent = mode === "mini" ? "Mini Test" : "Full Test";
+                buildNavGrid();
+                renderQ();
+            }
+
+            function buildNavGrid() {
+                const grid = document.getElementById("q-nav-grid");
+                grid.innerHTML = testQs
+                    .map(
+                        (q, i) =>
+                            `<button class="q-nav-btn ${i === currentQ ? "current" : ""} ${answers[q.id] !== undefined ? "answered" : ""} ${flagged[q.id] ? "flagged" : ""}" onclick="jumpQ(${i})">${i + 1}</button>`,
+                    )
+                    .join("");
+                const answered = Object.keys(answers).length;
+                document.getElementById("prog-fill").style.width =
+                    (answered / testQs.length) * 100 + "%";
+                document.getElementById("prog-text").textContent =
+                    `${answered} / ${testQs.length} dijawab`;
+            }
+
+            function renderQ() {
+                const q = testQs[currentQ];
+                const area = document.getElementById("q-area");
+                const selectedAns = answers[q.id];
+                area.innerHTML = `
+                <div class="q-meta2">
+                  <span class="q-number-large">Soal ${currentQ + 1} dari ${testQs.length} &nbsp;·&nbsp; <span style="color:var(--muted)">${q.section} — ${q.sub}</span></span>
+                  <button class="flag-btn ${flagged[q.id] ? "flagged" : ""}" onclick="toggleFlag(${q.id})">
+                    ${flagged[q.id] ? "🚩 Ditandai" : "⚑ Tandai"}
+                  </button>
+                </div>
+                <div class="q-text-large">${q.q}</div>
+                <div class="answer-choices">
+                  ${q.opts
+                      .map(
+                          (
+                              o,
+                              i,
+                          ) => `<button class="answer-btn ${selectedAns === i ? "selected" : ""}" onclick="selectAns(${q.id},${i})">
+                    <div class="opt-circle">${String.fromCharCode(65 + i)}</div>
+                    <span>${o}</span>
+                  </button>`,
+                      )
+                      .join("")}
+                </div>
+              `;
+                document.getElementById("btn-prev").disabled = currentQ === 0;
+                document.getElementById("btn-next").disabled =
+                    currentQ === testQs.length - 1;
+                buildNavGrid();
+            }
+
+            function selectAns(qid, idx) {
+                answers[qid] = idx;
+                renderQ();
+            }
+
+            function toggleFlag(qid) {
+                flagged[qid] = !flagged[qid];
+                renderQ();
+            }
+
+            function jumpQ(i) {
+                currentQ = i;
+                renderQ();
+                closeSidebar();
+            }
+            function toggleSidebar() {
+                document.querySelector(".sidebar").classList.toggle("open");
+                document
+                    .getElementById("sidebar-overlay")
+                    .classList.toggle("open");
+            }
+            function closeSidebar() {
+                document.querySelector(".sidebar").classList.remove("open");
+                document
+                    .getElementById("sidebar-overlay")
+                    .classList.remove("open");
+            }
+            function goQ(d) {
+                currentQ = Math.max(
+                    0,
+                    Math.min(testQs.length - 1, currentQ + d),
+                );
+                renderQ();
+            }
+
+            function confirmSubmit() {
+                const unanswered = testQs.length - Object.keys(answers).length;
+                if (unanswered > 0) {
+                    if (
+                        !confirm(
+                            `Masih ada ${unanswered} soal belum dijawab. Yakin ingin mengakhiri tes?`,
+                        )
+                    )
+                        return;
+                }
+                submitTest();
+            }
+
+            function submitTest() {
+                clearInterval(timerInterval);
+                buildResults();
+                show("results");
+            }
+
+            function buildResults() {
+                let correct = 0,
+                    wrong = 0,
+                    skipped = 0;
+                let tpkCorrect = 0,
+                    tpkTotal = 0,
+                    mkoCorrect = 0,
+                    mkoTotal = 0;
+                let reviewData = [];
+
+                testQs.forEach((q) => {
+                    const ua = answers[q.id];
+                    const isCorrect = ua === q.ans;
+                    const isSkipped = ua === undefined;
+                    if (isCorrect) correct++;
+                    else if (isSkipped) skipped++;
+                    else wrong++;
+                    if (q.section === "TPK") {
+                        tpkTotal++;
+                        if (isCorrect) tpkCorrect++;
+                    } else {
+                        mkoTotal++;
+                        if (isCorrect) mkoCorrect++;
+                    }
+                    reviewData.push({ q, ua, isCorrect, isSkipped });
+                });
+
+                const totalScore = correct * 5;
+                const tpkScore = tpkCorrect * 5;
+                const mkoScore = mkoCorrect * 5;
+                const tpkPass = tpkTotal > 0 && tpkScore >= 110;
+                const passed = tpkPass || mode === "mini";
+
+                const rb = document.getElementById("result-body");
+                rb.innerHTML = `
+                <div class="result-header">
+                  <div class="result-status ${passed ? "status-pass" : "status-fail"}">${passed ? "✓ LOLOS AMBANG BATAS TPK" : "✗ BELUM LOLOS"}</div>
+                  <div class="result-score">${totalScore}</div>
+                  <div class="result-sub">Total Nilai · ${correct}/${testQs.length} benar · Benar×5</div>
+                </div>
+                <div class="stats-row">
+                  <div class="stat-card"><div class="stat-val" style="color:var(--green)">${correct}</div><div class="stat-lbl">Jawaban Benar</div></div>
+                  <div class="stat-card"><div class="stat-val" style="color:var(--red)">${wrong}</div><div class="stat-lbl">Jawaban Salah</div></div>
+                  <div class="stat-card"><div class="stat-val" style="color:var(--hint)">${skipped}</div><div class="stat-lbl">Tidak Dijawab</div></div>
+                  <div class="stat-card"><div class="stat-val" style="color:var(--blue)">${Math.round((correct / testQs.length) * 100)}%</div><div class="stat-lbl">Akurasi</div></div>
+                </div>
+                ${
+                    tpkTotal > 0
+                        ? `<div class="section-scores">
+                  <div class="score-block">
+                    <div class="sb-title">Tes Potensi Kognitif (TPK)</div>
+                    <div class="sb-score" style="color:${tpkPass ? "var(--green)" : "var(--red)"}">${tpkScore}</div>
+                    <div class="sb-pass">Ambang batas: 110 · ${tpkCorrect}/${tpkTotal} benar · ${tpkPass ? "✓ LULUS" : "✗ BELUM LULUS"}</div>
+                    <div class="sb-bar"><div class="sb-fill" style="width:${Math.min(100, (tpkScore / 200) * 100)}%;background:${tpkPass ? "var(--green)" : "var(--red)"}"></div></div>
+                    <div style="height:4px;background:var(--amber);position:relative;margin-top:-4px;width:${(110 / 200) * 100}%;border-radius:0 2px 2px 0;opacity:0.6;"></div>
+                  </div>
+                  <div class="score-block">
+                    <div class="sb-title">Tes Manajemen Koperasi</div>
+                    <div class="sb-score">${mkoScore}</div>
+                    <div class="sb-pass">${mkoCorrect}/${mkoTotal} benar · Maks: 100</div>
+                    <div class="sb-bar"><div class="sb-fill" style="width:${mkoScore}%;background:var(--blue)"></div></div>
+                  </div>
+                </div>`
+                        : ""
+                }
+                <div class="review-section">
+                  <div class="review-header"><h3>Pembahasan Semua Soal</h3></div>
+                  <div class="review-body">
+                    ${reviewData
+                        .map(
+                            (d, i) => `<div class="review-q">
+                      <span class="review-num">${i + 1}</span>
+                      <div>
+                        <div class="review-qtext">${d.q.q.substring(0, 100)}...</div>
+                        <div style="font-size:12px;color:var(--hint);margin-top:4px;">Jawaban: <strong style="color:var(--text)">${String.fromCharCode(65 + d.q.ans)}. ${d.q.opts[d.q.ans]}</strong></div>
+                        ${d.isSkipped ? "" : `<div style="font-size:12px;color:var(--hint);">Pilihan Anda: ${String.fromCharCode(65 + d.ua)}. ${d.q.opts[d.ua]}</div>`}
+                        <div style="font-size:12px;color:var(--muted);margin-top:6px;background:var(--bg3);padding:8px;border-radius:6px;line-height:1.5;">${d.q.expl}</div>
+                      </div>
+                      <span class="review-answer ${d.isSkipped ? "ra-skip" : d.isCorrect ? "ra-correct" : "ra-wrong"}">${d.isSkipped ? "SKIP" : d.isCorrect ? "BENAR" : "SALAH"}</span>
+                    </div>`,
+                        )
+                        .join("")}
+                  </div>
+                </div>
+                <div class="result-actions">
+                  <button class="btn btn-primary" onclick="startTest('${mode}')">Ulangi Tes</button>
+                  <button class="btn btn-secondary" onclick="show('landing')">Kembali ke Menu</button>
+                </div>
+              `;
+            }
+
+            function startTimer() {
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    const m = Math.floor(timeLeft / 60),
+                        s = timeLeft % 60;
+                    const el = document.getElementById("timer-display");
+                    el.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+                    el.className =
+                        "timer-val" +
+                        (timeLeft < 300
+                            ? " danger"
+                            : timeLeft < 600
+                              ? " warning"
+                              : "");
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        submitTest();
+                    }
+                }, 1000);
+            }
+        </script>
+    </body>
+</html>
